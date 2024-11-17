@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatrixSolverServer", "MatrixSolverServer\MatrixSolverServer.csproj", "{1D874B56-068D-4FDD-BCE1-71F0DDF70980}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixSolverClient", "MatrixSolverClient\MatrixSolverClient.csproj", "{ACF2E6BB-8E34-4259-886F-3DB77E3D18D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D874B56-068D-4FDD-BCE1-71F0DDF70980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D874B56-068D-4FDD-BCE1-71F0DDF70980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D874B56-068D-4FDD-BCE1-71F0DDF70980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D874B56-068D-4FDD-BCE1-71F0DDF70980}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACF2E6BB-8E34-4259-886F-3DB77E3D18D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACF2E6BB-8E34-4259-886F-3DB77E3D18D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACF2E6BB-8E34-4259-886F-3DB77E3D18D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACF2E6BB-8E34-4259-886F-3DB77E3D18D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A6BB755B-3D91-47C6-92C1-24FCD34BE698}
+	EndGlobalSection
+EndGlobal
