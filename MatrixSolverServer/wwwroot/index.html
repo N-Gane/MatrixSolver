@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(120deg, #88e1f2, #c2f8cb);
+            color: #084c61;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #075b61;
+        }
+
+        label {
+            font-weight: bold;
+            color: #056d57;
+        }
+
+        input[type="text"], input[type="file"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #075b61;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        button {
+            background-color: #34a0a4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            button:hover {
+                background-color: #1d6d69;
+            }
+
+        pre {
+            background-color: #ebfafa;
+            border: 2px solid #34a0a4;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow: auto;
+            color: #084c61;
+            font-family: Consolas, monospace;
+            text-align: left;
+            width: 80%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Matrix Solver</h1>
+    <label for="serverAddress">Адрес сервера:</label>
+    <input type="text" id="serverAddress" value="ws://localhost:5145/ws"><br><br>
+    <label for="jsonFile">Загрузите JSON файл с матрицей и вектором:</label>
+    <input type="file" id="jsonFile" accept=".json"><br><br>
+    <button id="sendButton">Отправить</button>
+    <pre id="result">Результат будет здесь...</pre>
+
+    <script>
+        document.getElementById('sendButton').addEventListener('click', async () => {
+            const serverAddress = document.getElementById('serverAddress').value;
+            const fileInput = document.getElementById('jsonFile');
+
+            if (!fileInput.files[0]) {
+                alert('Выберите файл перед отправкой.');
+                return;
+            }
+
+            const fileContent = await fileInput.files[0].text();
+            const socket = new WebSocket(serverAddress);
+
+            socket.onopen = () => {
+                console.log('Соединение установлено');
+                socket.send(fileContent);
+            };
+
+            socket.onmessage = (event) => {
+                const result = JSON.parse(event.data);
+                document.getElementById('result').textContent =
+                    `Решение ленточным методом: ${result.StripeSolution.join(', ')}\n` 
+                  
+                socket.close();
+            };
+
+            socket.onerror = (error) => {
+                console.error('Ошибка WebSocket:', error);
+                document.getElementById('result').textContent = 'Ошибка при соединении с сервером.';
+            };
+        });
+    </script>
+</body>
+</html>

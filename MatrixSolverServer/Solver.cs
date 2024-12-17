@@ -1,51 +1,49 @@
-﻿namespace MatrixSolverServer
+﻿using System;
+using System.Threading.Tasks;
+
+namespace MatrixSolverServer
 {
     public static class Solver
     {
-        // Уже существующий метод
-        public static double[] SolveSLAU(double[][] matrix, double[] vector)
-        {
-            int n = vector.Length;
-            double[] solution = new double[n];
-
-            Parallel.For(0, n, i =>
-            {
-                solution[i] = 0;
-                for (int j = 0; j < n; j++)
-                {
-                    solution[i] += matrix[i][j] * vector[j];
-                }
-            });
-
-            return solution;
-        }
-
-        // Новый метод с ленточным перемножением
+        // Метод для решения СЛАУ с ленточным перемножением
         public static double[] SolveSLAUWithStripeMultiplication(double[][] matrix, double[] vector)
         {
             int n = matrix.Length;
             double[] solution = new double[n];
 
-            // Ленточное перемножение матриц (разделение на полосы)
-            Parallel.For(0, n, i =>
+            // Прямой ход с ленточным подходом
+            for (int k = 0; k < n - 1; k++)
             {
-                for (int j = 0; j < n; j++)
+                if (Math.Abs(matrix[k][k]) < 1e-10)
                 {
-                    solution[i] += matrix[i][j] * vector[j];
+                    throw new ArgumentException("Нулевой элемент на диагонали. Решение невозможно.");
                 }
-            });
 
-            // Обратная подстановка для решения
+                // Нормализация текущей строки
+                Parallel.For(k + 1, n, i =>
+                {
+                    double factor = matrix[i][k] / matrix[k][k];
+                    for (int j = k; j < n; j++)
+                    {
+                        matrix[i][j] -= factor * matrix[k][j];
+                    }
+                    vector[i] -= factor * vector[k];
+                });
+            }
+
+            // Обратный ход (подстановка)
             for (int i = n - 1; i >= 0; i--)
             {
-                solution[i] /= matrix[i][i];
-                for (int j = i - 1; j >= 0; j--)
+                solution[i] = vector[i];
+                for (int j = i + 1; j < n; j++)
                 {
-                    solution[j] -= matrix[j][i] * solution[i];
+                    solution[i] -= matrix[i][j] * solution[j];
                 }
+                solution[i] /= matrix[i][i];
             }
 
             return solution;
         }
     }
 }
+
